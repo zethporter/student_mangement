@@ -20,11 +20,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               className="input input-bordered w-24 md:w-auto"
             />
           </div>
-          {/* <label className="swap-rotate swap">
+          <label className="swap swap-rotate">
             <input type="checkbox" />
             <SunIcon className="swap-on h-10 w-10 fill-current" />
             <MoonIcon className="swap-off h-10 w-10 fill-current" />
-          </label> */}
+          </label>
           <UserButton />
         </div>
       </div>
