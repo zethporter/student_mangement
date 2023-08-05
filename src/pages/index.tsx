@@ -1,7 +1,17 @@
 import Head from "next/head";
 import Link from "next/link";
+import axios from "axios";
+import { atom, useAtom } from "jotai";
 
+const messageAtom = atom("");
 export default function Home() {
+  const [message, setMessage] = useAtom(messageAtom);
+
+  const sendText = async (messageContent: string) => {
+    const { data } = await axios.post("/api/text", { message: messageContent });
+    console.log("this is the returned data", data);
+  };
+
   return (
     <>
       <Head>
@@ -10,7 +20,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div>This is the main page</div>
+        <div className="mx-auto my-2 flex gap-1 rounded-xl bg-slate-400 p-4">
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-bordered max-w-xs"
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button onClick={() => sendText(message)} className="btn btn-primary">
+            Send Message
+          </button>
+        </div>
       </main>
     </>
   );
