@@ -18,7 +18,7 @@ type ResponseData = {
 
 export default async function studentActions(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ResponseData>,
 ) {
   const { method, body, headers } = req;
 
@@ -31,7 +31,12 @@ export default async function studentActions(
 
   switch (method) {
     case "GET":
-      const result = await db.select().from(students);
+      try {
+        const result = await db.select(body.query).from(students);
+        res.status(200).json({ data: result });
+      } catch {
+        res.status(500).json({ message: "someting went wrong..." });
+      }
     case "POST":
       try {
         console.log(body);
@@ -40,13 +45,15 @@ export default async function studentActions(
         res.status(200).json({ data: newStudent });
       } catch (e) {
         console.error(e);
-        res.status(500).json({
-          message:
-            "something went wrong figure out what the actual message is.",
-        });
+        res
+          .status(500)
+          .json({
+            message:
+              "something went wrong figure out what the actual message is.",
+          });
       }
-    case "PATCH":
-    case "DELETE":
+    // case "PATCH":
+    // case "DELETE":
     default:
       // res.setHeader("Allow", ["GET", "POST", "PATCH", "DELETE"]);
       res.status(405).end(`${method} method not allowed`);

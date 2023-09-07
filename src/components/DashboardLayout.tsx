@@ -8,23 +8,20 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="navbar fixed bg-base-200">
         <div className="flex-1">
-          <Link href={"/"} className="btn btn-ghost text-xl normal-case">
+          <Link
+            href={"/dashboard"}
+            className="btn btn-ghost text-xl normal-case"
+          >
             Student Management
           </Link>
         </div>
-        <div className="flex-none gap-2">
-          {/* <div className="form-control">
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered w-24 md:w-auto"
-            />
-          </div> */}
-          {/* <label className="swap swap-rotate">
-            <input type="checkbox" />
-            <SunIcon className="swap-on h-10 w-10 fill-current" />
-            <MoonIcon className="swap-off h-10 w-10 fill-current" />
-          </label> */}
+        <div className="flex gap-2 pr-4">
+          <Link
+            href={"/dashboard/students"}
+            className="btn btn-ghost text-lg normal-case"
+          >
+            Students
+          </Link>
           <UserButton />
         </div>
       </div>

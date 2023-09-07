@@ -3,45 +3,45 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const students = mysqlTable("Students", {
   id: char("id", { length: 36 }).primaryKey(),
-  group_id: char("group_id", { length: 36 }),
-  first_name: char("first_name", { length: 255 }),
-  last_name: char("last_name", { length: 255 }),
-  phone_number: char("phone_number", { length: 255 }),
+  groupId: char("group_id", { length: 36 }),
+  firstName: char("first_name", { length: 255 }),
+  lastName: char("last_name", { length: 255 }),
+  phoneNumber: char("phone_number", { length: 255 }),
 });
 
 export const insertStudentSchema = createInsertSchema(students);
 export const selectStudentSchema = createSelectSchema(students);
 
-export const instructors = mysqlTable("instructors", {
+export const instructors = mysqlTable("Instructors", {
   id: char("id", { length: 36 }).primaryKey(),
-  firstName: char("firstName", { length: 255 }),
-  lastName: char("lastName", { length: 255 }),
-  phoneNumber: char("phoneNumber", { length: 255 }),
+  firstName: char("first_name", { length: 255 }),
+  lastName: char("last_name", { length: 255 }),
+  phoneNumber: char("phone_number", { length: 255 }),
 });
 
 export const insertInstructorSchema = createInsertSchema(instructors);
 export const selectInstructorSchema = createSelectSchema(instructors);
 
-export const groups = mysqlTable("groups", {
+export const groups = mysqlTable("Groups", {
   id: char("id", { length: 36 }).primaryKey(),
-  groupName: char("groupName", { length: 255 }),
-  instructorId: char("instructorId", { length: 36 }),
+  groupName: char("group_name", { length: 255 }),
+  instructorId: char("instructor_id", { length: 36 }),
 });
 
 export const insertGroupSchema = createInsertSchema(groups);
 export const selectGroupSchema = createSelectSchema(groups);
 
-export const events = mysqlTable("events", {
+export const events = mysqlTable("Events", {
   id: char("id", { length: 36 }).primaryKey(),
-  groupId: char("groupId", { length: 36 }),
-  typeId: char("typeId", { length: 36 }),
-  eventDate: char("eventDate", { length: 255 }),
+  groupId: char("group_id", { length: 36 }),
+  typeId: char("type_id", { length: 36 }),
+  eventDate: char("event_date", { length: 255 }),
 });
 
 export const insertEventSchema = createInsertSchema(events);
 export const selectEventSchema = createSelectSchema(events);
 
-export const eventTypes = mysqlTable("eventTypes", {
+export const eventTypes = mysqlTable("Event_Types", {
   id: char("id", { length: 36 }).primaryKey(),
   name: char("name", { length: 255 }),
 });
@@ -49,42 +49,22 @@ export const eventTypes = mysqlTable("eventTypes", {
 export const insertEventTypeSchema = createInsertSchema(eventTypes);
 export const selectEventTypeSchema = createSelectSchema(eventTypes);
 
-export const messages = mysqlTable("messages", {
+export const messages = mysqlTable("Messages", {
   id: char("id", { length: 36 }).primaryKey(),
-  messageContent: char("messageContent", { length: 255 }),
-  dateTimeSent: char("dateTimeSent", { length: 255 }),
-  sentTo: char("sentTo", { length: 255 }),
-  sentToEvent: char("sentToEvent", { length: 36 }),
-  sentToGroup: char("sentToGroup", { length: 36 }),
+  messageContent: char("message_content", { length: 255 }),
+  dateTimeSent: char("date_time_sent", { length: 255 }),
+  sentToEvent: char("sent_to_event", { length: 36 }),
+  sentToGroup: char("sent_to_group", { length: 36 }),
 });
 
 export const insertMessagesSchema = createInsertSchema(messages);
 export const selectMessagesSchema = createSelectSchema(messages);
 
-export const notes = mysqlTable("notes", {
+export const messageConnectors = mysqlTable("message_connectors", {
   id: char("id", { length: 36 }).primaryKey(),
-  noteDate: char("noteDate", { length: 255 }),
-  noteContent: char("noteContent", { length: 255 }),
-  relatedEvent: char("relatedEvent", { length: 36 }),
-  relatedGroup: char("relatedGroup", { length: 36 }),
+  messageId: char("message_id", { length: 36 }),
+  studentId: char("student_id", { length: 36 }),
 });
 
-export const insertNotesSchema = createInsertSchema(notes);
-export const selectNotesSchema = createSelectSchema(notes);
-
-export const tags = mysqlTable("tags", {
-  id: char("id", { length: 36 }).primaryKey(),
-  tagName: char("tagName", { length: 255 }),
-});
-
-export const insertTagsSchema = createInsertSchema(tags);
-export const selectTagsSchema = createSelectSchema(tags);
-
-export const noteTags = mysqlTable("noteTags", {
-  id: char("id", { length: 36 }).primaryKey(),
-  noteId: char("noteId", { length: 36 }),
-  tagId: char("tagId", { length: 36 }),
-});
-
-export const insertNoteTagsSchema = createInsertSchema(noteTags);
-export const selectNoteTagsSchema = createSelectSchema(noteTags);
+export const insertNoteTagsSchema = createInsertSchema(messageConnectors);
+export const selectNoteTagsSchema = createSelectSchema(messageConnectors);
