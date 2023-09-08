@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { connect } from "@planetscale/database";
+import { getAuth } from "@clerk/nextjs/server";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
@@ -14,6 +15,7 @@ import {
 type ResponseData = {
   message?: string;
   data?: any;
+  error?: string;
 };
 
 export default async function studentActions(
@@ -21,6 +23,12 @@ export default async function studentActions(
   res: NextApiResponse<ResponseData>,
 ) {
   const { method, body, headers } = req;
+  const { userId } = getAuth(req);
+
+  if (!userId) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
 
   const connection = connect({
     host: process.env["DATABASE_HOST"],
@@ -45,12 +53,10 @@ export default async function studentActions(
         res.status(200).json({ data: newStudent });
       } catch (e) {
         console.error(e);
-        res
-          .status(500)
-          .json({
-            message:
-              "something went wrong figure out what the actual message is.",
-          });
+        res.status(500).json({
+          message:
+            "something went wrong figure out what the actual message is.",
+        });
       }
     // case "PATCH":
     // case "DELETE":
