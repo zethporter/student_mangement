@@ -8,6 +8,7 @@ import {
   insertStudentSchema,
   students,
 } from "~/db/schema";
+import TempStudentArray from "~/temp/tempStudents";
 
 // process.env.TURSO_DB_URL
 // process.env.TURSO_DB_AUTH_TOKEN
@@ -22,7 +23,7 @@ export default async function studentActions(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>,
 ) {
-  const { method, body, headers } = req;
+  const { method, body } = req;
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -39,12 +40,17 @@ export default async function studentActions(
 
   switch (method) {
     case "GET":
-      try {
-        const result = await db.select(body.query).from(students);
-        res.status(200).json({ data: result });
-      } catch {
-        res.status(500).json({ message: "someting went wrong..." });
+      if (process.env.NODE_ENV === "development") {
+        res.status(200).json({ data: TempStudentArray });
+      } else {
+        try {
+          const result = await db.select(body.query).from(students);
+          res.status(200).json({ data: result });
+        } catch {
+          res.status(500).json({ message: "someting went wrong..." });
+        }
       }
+      break;
     case "POST":
       try {
         console.log(body);
@@ -58,10 +64,10 @@ export default async function studentActions(
             "something went wrong figure out what the actual message is.",
         });
       }
+      break;
     // case "PATCH":
     // case "DELETE":
     default:
-      // res.setHeader("Allow", ["GET", "POST", "PATCH", "DELETE"]);
       res.status(405).end(`${method} method not allowed`);
   }
 }

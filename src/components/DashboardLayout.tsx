@@ -6,7 +6,7 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <div className="navbar fixed bg-base-200">
+      <div className="navbar fixed z-50 bg-base-200">
         <div className="flex-1">
           <Link
             href={"/dashboard"}
@@ -25,7 +25,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <UserButton />
         </div>
       </div>
-      <div className="min-h-screen pt-12">{children}</div>
+      <div className="min-h-screen bg-base-300 pt-12">{children}</div>
       <footer className="footer items-center bg-base-300 p-4 text-neutral-content">
         <div className="grid-flow-col items-center">
           <svg
