@@ -6,6 +6,7 @@ import SwrConfig from "~/components/config/SwrConfig";
 import "~/styles/globals.css";
 
 import { themeAtom } from "~/styles/themeSettings";
+import { Toaster } from "react-hot-toast";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -18,6 +19,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       }}
     >
       <SwrConfig>
+        <Toaster position="bottom-left" />
         <Component {...pageProps} />
       </SwrConfig>
     </ClerkProvider>

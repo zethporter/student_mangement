@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { connect } from "@planetscale/database";
 import { getAuth } from "@clerk/nextjs/server";
+import gradient from "gradient-string";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
@@ -25,6 +26,9 @@ export default async function studentActions(
 ) {
   const { method, body } = req;
   const { userId } = getAuth(req);
+  if (process.env.NODE_ENV === "development") {
+    console.log(gradient.teen(userId ?? ""));
+  }
 
   if (!userId) {
     res.status(401).json({ error: "Unauthorized" });
@@ -40,15 +44,11 @@ export default async function studentActions(
 
   switch (method) {
     case "GET":
-      if (process.env.NODE_ENV === "development") {
-        res.status(200).json({ data: TempStudentArray });
-      } else {
-        try {
-          const result = await db.select(body.query).from(students);
-          res.status(200).json({ data: result });
-        } catch {
-          res.status(500).json({ message: "someting went wrong..." });
-        }
+      try {
+        const result = await db.select(body.query).from(students);
+        res.status(200).json({ data: result });
+      } catch {
+        res.status(500).json({ message: "someting went wrong..." });
       }
       break;
     case "POST":

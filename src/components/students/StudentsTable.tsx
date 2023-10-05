@@ -19,10 +19,25 @@ import useSwr from "swr";
 import { selectStudentSchema } from "~/db/schema";
 import CustomModal from "../common/CustomModal";
 import { studentsAtom } from "./StudentsFetcher";
+import {
+  ToastError,
+  ToastSuccess,
+  ToastInfo,
+  ToastWarning,
+  ToastLoading,
+} from "~/components/common/Toasts";
+import NewStudentInput from "./NewStudentInput";
 
 const StudentsTable = () => {
   const [studentsData, setStudentsData] = useAtom(studentsAtom);
   const [studentModalOpen, setStudentModalOpen] = useState(false);
+  const tempToasts = () => {
+    ToastError("Toast Error");
+    ToastSuccess("Toast Success");
+    ToastInfo("ToastInfo");
+    ToastWarning("Toast Warning");
+    ToastLoading("Toast Loading");
+  };
 
   return (
     <>
@@ -84,7 +99,7 @@ const StudentsTable = () => {
         </table>
       </div>
       <CustomModal open={studentModalOpen} onClose={setStudentModalOpen}>
-        <p>This is the customModal</p>
+        <NewStudentInput />
       </CustomModal>
     </>
   );

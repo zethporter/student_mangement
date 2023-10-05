@@ -21,7 +21,7 @@ const StudentsFetcher = () => {
   if (error)
     return (
       <div className="alert alert-error">
-        <XCircleIcon className="h-4 w-4" />
+        <XCircleIcon className="h-6 w-6" />
         <span>{"This will be an error"}</span>
       </div>
     );
