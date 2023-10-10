@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAtom } from "jotai";
 import {
   PencilSquareIcon,
@@ -39,16 +39,24 @@ const StudentsTable = () => {
     ToastLoading("Toast Loading");
   };
 
+  //   useEffect(() => {
+  //     if (studentModalRef.current?.open) {
+  //       studentModalRef.current?.close()
+  //     } else if (!studentModalRef.current?.open) {
+  //       studentModalRef.current?.showModal()
+  //     }
+  // }, [])
+
   return (
     <>
       <div className="flex w-full justify-between">
         <p className="pl-2 align-middle">Students</p>
-        <button
-          onClick={() => setStudentModalOpen(true)}
-          className="btn border-0 text-primary hover:border-0 hover:bg-transparent hover:text-primary-focus"
+        <CustomModal
+          buttonClassName="btn border-0 text-primary hover:border-0 hover:bg-transparent hover:text-primary-focus"
+          buttonContent={<UserPlusIcon className="h-6 w-6" />}
         >
-          <UserPlusIcon className="h-6 w-6" />
-        </button>
+          <NewStudentInput />
+        </CustomModal>
       </div>
       <div className="overflow-x-auto">
         <table className="table">
@@ -98,9 +106,6 @@ const StudentsTable = () => {
           </tbody>
         </table>
       </div>
-      <CustomModal open={studentModalOpen} onClose={setStudentModalOpen}>
-        <NewStudentInput />
-      </CustomModal>
     </>
   );
 };

@@ -5,11 +5,13 @@ export const TextInput = ({
   label,
   placeholder,
   name,
+  defaultValue = "",
 }: {
   control: any;
   label?: string;
   placeholder?: string;
   name: string;
+  defaultValue?: string;
 }) => {
   return (
     <Controller
@@ -19,17 +21,18 @@ export const TextInput = ({
         required: true,
       }}
       render={({ field: { onChange, onBlur, value } }) => (
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control">
           <label className="label">
             <span className="label-text">{label}</span>
           </label>
           <input
+            defaultValue={defaultValue}
             type="text"
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered input-secondary"
           />
         </div>
       )}

@@ -1,33 +1,32 @@
-import { useState } from "react";
+import { useRef } from "react";
 import clsx from "clsx";
 
 const CustomModal = ({
-  open,
-  onClose,
+  buttonClassName,
+  buttonContent,
   children,
 }: {
-  open: boolean;
-  onClose: Function;
+  buttonClassName: string;
+  buttonContent: string | React.ReactNode;
   children: React.ReactNode;
 }) => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+
   return (
-    // <button className="btn" onClick={()=>document.getElementById('my_modal_5').showModal()}>open modal</button>
-    <div
-      className={clsx(
-        { "modal-open": open },
-        "modal modal-bottom sm:modal-middle",
-      )}
-    >
-      <div className="modal-box">
-        {children}
-        <div className="modal-action">
-          {/* if there is a button in form, it will close the modal */}
-          <button onClick={() => onClose(false)} className="btn">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      <button
+        onClick={() => modalRef.current?.showModal()}
+        className={buttonClassName}
+      >
+        {buttonContent}
+      </button>
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">{children}</div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+    </>
   );
 };
 
