@@ -1,4 +1,5 @@
 import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { eq, lt, gte, ne } from "drizzle-orm";
 import { connect } from "@planetscale/database";
 import { getAuth } from "@clerk/nextjs/server";
 import gradient from "gradient-string";
@@ -45,7 +46,10 @@ export default async function studentActions(
   switch (method) {
     case "GET":
       try {
-        const result = await db.select(body.query).from(students);
+        const result = await db
+          .select(body.query)
+          .from(students)
+          .where(eq(students.user_id, userId));
         res.status(200).json({ data: result });
       } catch {
         res.status(500).json({ message: "someting went wrong..." });
@@ -53,15 +57,23 @@ export default async function studentActions(
       break;
     case "POST":
       try {
-        console.log(body);
-        // const newStudent = body;
-        const newStudent = await db.insert(students).values(body);
-        res.status(200).json({ data: newStudent });
+        const id = crypto.randomUUID();
+        body["id"] = id;
+        body["user_id"] = userId;
+
+        const validatedBody = await insertStudentSchema.parseAsync(body);
+        console.log(gradient.cristal.multiline(JSON.stringify(body)));
+        console.log(gradient.fruit.multiline(JSON.stringify(validatedBody)));
+
+        await db.insert(students).values(validatedBody);
+
+        res.status(200).json({
+          message: `Added ${validatedBody.first_name} ${validatedBody.last_name}`,
+        });
       } catch (e) {
         console.error(e);
         res.status(500).json({
-          message:
-            "something went wrong figure out what the actual message is.",
+          message: JSON.stringify(e),
         });
       }
       break;

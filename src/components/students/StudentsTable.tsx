@@ -64,22 +64,22 @@ const StudentsTable = () => {
             {studentsData.map(
               (student: {
                 id: Key | string;
-                firstName: string;
-                lastName: string;
-                phoneNumber: string;
+                first_name: string;
+                last_name: string;
+                phone_number: string;
               }) => (
                 <tr key={student.id}>
                   <td>
                     <div className="avatar placeholder">
                       <div className="h-12 w-12 rounded-full bg-primary text-primary-content">
-                        <span className="text-xl">{`${student.firstName[0]}${student.lastName[0]}`}</span>
+                        <span className="text-xl">{`${student.first_name[0]}${student.last_name[0]}`}</span>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div>
-                        <div className="font-bold">{`${student.firstName} ${student.lastName}`}</div>
+                        <div className="font-bold">{`${student.first_name} ${student.last_name}`}</div>
                         <div className="text-sm opacity-50">Student</div>
                       </div>
                     </div>
@@ -87,7 +87,7 @@ const StudentsTable = () => {
                   <td>
                     <PatternFormat
                       className="bg-transparent font-bold"
-                      value={student.phoneNumber}
+                      value={student.phone_number}
                       format="(###) ###-####"
                     />
                     <br />

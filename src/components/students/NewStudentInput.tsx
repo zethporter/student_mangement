@@ -1,9 +1,33 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { TextInput } from "../input/Inputs";
+import { TextInput, FormattedNumberInput } from "../input/Inputs";
+import axios from "axios";
+import {
+  ToastError,
+  ToastSuccess,
+  ToastInfo,
+  ToastWarning,
+  ToastLoading,
+} from "~/components/common/Toasts";
 
 const NewStudentInput = () => {
   const { control, handleSubmit, reset } = useForm();
-  const onSubmit: SubmitHandler<any> = (data) => console.debug("data:", data);
+
+  const onSubmit: SubmitHandler<any> = async (body) => {
+    const newStudentToast = ToastLoading(
+      `Adding student: ${[body.first_name, body.last_name].join(" ")}`,
+    );
+    const { data, error }: any = await axios.post("/api/student-actions", body);
+
+    if (error) {
+      ToastError(error.message, {
+        id: newStudentToast,
+      });
+    }
+
+    ToastSuccess(data.message, {
+      id: newStudentToast,
+    });
+  };
 
   const resetForm = () => {
     reset({
@@ -16,7 +40,7 @@ const NewStudentInput = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.debug(data);
+        onSubmit(data);
         resetForm();
       })}
     >
@@ -33,11 +57,12 @@ const NewStudentInput = () => {
           placeholder={"Appleseed"}
           label={"Last Name"}
         />
-        <TextInput
+        <FormattedNumberInput
           name={"phone_number"}
           control={control}
           placeholder={"Test"}
           label={"Phone Number"}
+          format={"(###) ###-####"}
         />
         <div>
           <button
